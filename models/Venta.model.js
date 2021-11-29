@@ -13,15 +13,23 @@ const todoShema = new mongoose.Schema(
         },
         Fecha:{
             type: String,
-            default: "hh:mm:ss dd/MM/yyyyy"
+            default: "dd/MM/yyyyy"
         },
-        Persona: {
+        Hora:{
+            type: String,
+            default: "hh:mm"
+        },
+        Personal: {
             type: String,
             default: ""
         },
         del:{
             type: Boolean,
             default: true
+        },
+        Montos:{
+            type: Array,
+            required: true
         }
     }
 )

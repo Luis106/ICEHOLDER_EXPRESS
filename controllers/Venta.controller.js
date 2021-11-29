@@ -1,24 +1,25 @@
 
 const { Venta } = require("../models/Venta.model");
-
+const date = new Date();
 async function minsertOne(req,res){
 
     const Productos = req.body.Productos;
     const Cantidades = req.body.Cantidades;
-    const Fecha = req.body.Fecha;
     const Personal = req.body.Personal;
+    const Montos = req.body.Montos;
     
-    console.log(Productos)
-    console.log(Cantidades)
-    console.log(Personal)
-    if (Productos && Cantidades && Personal){
+    const Fecha = (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear() )
+    const Hora = (date.getHours()+":"+date.getMinutes()+":"+date.getSeconds() )
+    if (Productos && Cantidades && Personal && Montos){
        try {
 
             const nuevaVenta = await new Venta({
                 Productos: Productos,
                 Cantidades: Cantidades,
                 Fecha: Fecha,
+                Hora: Hora,
                 Personal: Personal,
+                Montos: Montos
                 
             }).save();
             res.status(200).json({
@@ -35,7 +36,6 @@ async function minsertOne(req,res){
     }else{
         res.status(400).send("Falta de parametros");
     }
-
 }
 
 ///http://localhost:3000/Venta/listall?status=NEW
@@ -57,7 +57,7 @@ async function mFindAll(req,res){
                 data: []
                 });
         }
-    }   
+}   
 
 async function mDeleteOne(req,res){
 
@@ -110,10 +110,106 @@ async function mRestore(req,res){
 
     }
 }
+async function mMontoD(req,res){
+    const Fecha = (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear())
+    try {
+        const result =  await Venta.find({
+            del: { $eq: true }, Fecha: { $eq: Fecha }
+        });
+        if (result && result.length > 0) {
+
+            const reducer = (previousValue, currentValue) => previousValue + currentValue;
+            var n = 0;
+
+            result.forEach(element => {
+                n += element.Montos.reduce(reducer)
+            });
+            console.log(n)
+
+            const response = {
+                Dia: Fecha,
+                MontoTotal : n,
+                Ventas: result.length
+            }
+
+            res.status(200).json(response);
+
+        }else{
+            res.status(200).json([]);
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(
+            {message: error,
+            data: []
+            });
+    }
+}   
+
+async function mMontopDia(req,res){
+    const Fecha = req.body.Fecha
+    try {
+        const result =  await Venta.find({
+            del: { $eq: true }, Fecha: { $eq: Fecha }
+        });
+        if (result && result.length > 0) {
+
+            const reducer = (previousValue, currentValue) => previousValue + currentValue;
+            var n = 0;
+
+            result.forEach(element => {
+                n += element.Montos.reduce(reducer)
+            });
+            console.log(n)
+
+            const response = {
+                Dia: Fecha,
+                MontoTotal : n,
+                Ventas: result.length
+            }
+
+            res.status(200).json(response);
+
+        }else{
+            res.status(200).json([]);
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(
+            {message: error,
+            data: []
+            });
+    }
+} 
+async function VentaspDia(req,res){
+    const Fecha = req.body.Fecha
+    try {
+        const result =  await Venta.find({
+            del: { $eq: true }, Fecha: { $eq: Fecha }
+        });
+        if (result && result.length > 0) {
+            res.status(200).json(result);
+
+        }else{
+            res.status(200).json([]);
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(
+            {message: error,
+            data: []
+            });
+    }
+} 
+
+
 
 module.exports= {
     minsertOne,
     mFindAll,
     mRestore,
-    mDeleteOne
+    mDeleteOne,
+    mMontoD,
+    mMontopDia,
+    VentaspDia
 }
