@@ -6,24 +6,21 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
 
-
 ///Rutas
 var indexRouter = require('./routes/index');
 var usuarioRoutes = require('./routes/usuario.routes.js');
-var Taskrouter = require("./routes/task.routes.js");
-var citaRouter = require("./routes/cita.routes.js");
+var ProductoRouter = require("./routes/Producto.routes.js");
 var authRouter = require("./routes/auth.routes.js");
-var servicioRouter = require("./routes/servicio.routes.js");
-
-
-
+var VentaRouter = require("./routes/Venta.routes.js");
 
 var app = express();
 
 ///Mongoose 
 const mongoose = require("mongoose");
-
-const databaseUrl = "mongodb://localhost:27017/todoDB"
+//Local
+//const databaseUrl = "mongodb://localhost:27017/c"
+///Atlas
+const databaseUrl = "mongodb+srv://root:root@clusterulsa.ntifm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const databaseOptions = {
     useNewUrlParser: true
 };
@@ -33,6 +30,7 @@ mongoose.connection.on("open", function(){
 });
 
 ///Inicializar Redis
+/*
 try {
   const redis = require("redis")
   client  = redis.createClient();
@@ -45,14 +43,14 @@ try {
   console.log("Redis no conectado")
   
 }
-
+*/
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
@@ -60,9 +58,8 @@ app.use(cors())
 //app.use('/', indexRouter);
 app.use('/Usuario', usuarioRoutes);
 app.use("/auth",authRouter)
-app.use("/Task", Taskrouter)
-app.use("/Cita", citaRouter)
-app.use("/Servicio", servicioRouter)
+app.use("/Producto", ProductoRouter)
+app.use("/Ventas", VentaRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -45,8 +45,6 @@ async function mFind(req,res){
         }
 }  
 
-
-
 async function minsertOne(req,res){
 
     const Nombre = req.body.Nombre;
@@ -81,9 +79,91 @@ async function minsertOne(req,res){
     }
 
 }  
+async function FindAll(req,res){
+    try {
+
+        const result =  await Usuario.findOne(
+            {del: { $eq: true } },
+            {Contraseña: 0}
+            );
+
+        if (result && result.length > 0) {
+
+            res.status(200).json(result);
+
+        }else{
+
+            res.status(200).send(result)
+        }
+
+        }catch (error) {
+
+            console.log(error)
+            res.status(500).json(
+                {message: error,
+                data: []
+                });
+        }
+} 
+
+async function mDelete(req,res){
+    const _id = req.body._id;
+    if (_id){
+
+       try {
+
+            await Usuario.updateOne({
+                _id: _id,
+            }, {
+                $set:{
+                    del: false
+                }
+            }); 
+            res.status(200).json({
+                msg: "Registro actualizado"
+            });
+
+       } catch (error) {
+
+           console.log(error)
+           res.status(500).send("No se pudo actualizar la tarea");
+       }
+
+    }
+}
+async function mUpdate(req,res){
+    const _id = req.body._id;
+    const Usuario = req.body.Nombre;
+    if (_id){
+
+       try {
+
+            await Usuario.updateOne({
+                _id: _id,
+            }, {
+                $set:{
+                    Usuario: Usuario
+                }
+            }); 
+            res.status(200).json({
+                msg: "Registro actualizado"
+            });
+
+       } catch (error) {
+
+           console.log(error)
+           res.status(500).send("No se pudo actualizar la tarea");
+       }
+
+    }
+}
+
 
 
 module.exports= {
     mFind,
-    minsertOne
+    minsertOne,
+    FindAll,
+    mDelete,
+    mUpdate
 }

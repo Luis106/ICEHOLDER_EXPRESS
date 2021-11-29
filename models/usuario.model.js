@@ -13,6 +13,11 @@ const todoShema = new mongoose.Schema(
         Contraseña: {
             type: String,
             required: true,
+        },
+        del:{
+            type: Boolean,
+            default: true
+
         }
     }
 )

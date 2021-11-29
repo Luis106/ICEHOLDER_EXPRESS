@@ -4,15 +4,15 @@ const router = express.Router();
 const {
     minsertOne,
     mFindAll,
-    mUpdateOne,
+    mRestore,
     mDeleteOne
-} = require("../controllers/task.controller.js")
+} = require("../controllers/Venta.controller")
 
 
 //http://localhost:3000/Task
 router.post('/create', minsertOne);
 router.get('/', mFindAll);
-router.put('/update', mUpdateOne);
-router.delete('/delete', mDeleteOne);
+router.post('/restore', mRestore);
+router.post('/delete', mDeleteOne);
 
 module.exports = router;
