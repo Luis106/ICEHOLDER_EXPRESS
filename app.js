@@ -20,7 +20,7 @@ const mongoose = require("mongoose");
 //Local
 //const databaseUrl = "mongodb://localhost:27017/c"
 ///Atlas
-const databaseUrl = "mongodb+srv://root:root@clusterulsa.ntifm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const databaseUrl = "mongodb+srv://root:root@clusterulsa.ntifm.mongodb.net/iceholder?retryWrites=true&w=majority"
 const databaseOptions = {
     useNewUrlParser: true
 };
