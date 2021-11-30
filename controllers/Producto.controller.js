@@ -12,7 +12,7 @@ async function minsertOne(req,res){
             const newTask = await new Producto({
                 Nombre: Nombre,
                 Precio: Precio,
-                HCantidadora: Cantidad,
+                Cantidad: Cantidad,
                
 
             }).save();
@@ -117,7 +117,7 @@ async function mRestoreOne(req,res){
 async function mUpdateOne(req,res){
     const id = req.body._id;
     
-    const Producto = req.body.Producto;
+    const Nombre = req.body.Producto;
     const Precio = req.body.Precio;
     const Cantidad = req.body.Cantidad;
 
@@ -125,18 +125,19 @@ async function mUpdateOne(req,res){
 
        try {
 
-            await Producto.updateOne({
+            const response = await Producto.findOneAndUpdate(
+            {
                 _id: id,
-            }, {
+            }, 
+            {
                 $set:{
-                    Producto: Producto,
+                    Producto: Nombre,
                     Precio: Precio,
                     Cantidad: Cantidad,
                 }
-            }); 
-            res.status(200).json({
-                msg: "Registro actualizado"
-            });
+            },{new: true}); 
+
+            res.status(200).json(response);
 
        } catch (error) {
 
