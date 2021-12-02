@@ -68,7 +68,7 @@ async function mDeleteOne(req,res){
         try {
 
             await Producto.updateOne({
-                _id: id,
+                _id: id.toString(),
             }, {
                 $set:{
                     del: false
@@ -81,13 +81,13 @@ async function mDeleteOne(req,res){
        } catch (error) {
 
            console.log(error)
-           res.status(500).send("No se pudo actualizar la tarea");
+           res.status(500).send("No se pudo eliminar el producto");
        }
 
     }
 }
 async function mRestoreOne(req,res){
-
+ 
     const id = req.body._id;
     
     
@@ -96,24 +96,25 @@ async function mRestoreOne(req,res){
         try {
 
             await Producto.updateOne({
-                _id: id,
+                _id: id.toString(),
             }, {
                 $set:{
                     del: true
                 }
             }); 
             res.status(200).json({
-                msg: "Registro recuperado"
+                msg: "Registro restaurado"
             });
 
        } catch (error) {
 
            console.log(error)
-           res.status(500).send("No se pudo actualizar la tarea");
+           res.status(500).send("No se pudo restaurar el producto");
        }
 
     }
 }
+
 async function mUpdateOne(req,res){
     const id = req.body._id;
     
@@ -148,10 +149,38 @@ async function mUpdateOne(req,res){
     }
 }
 
+async function mPapelera(req,res){
+    try {
+
+        const result =  await Producto.find(
+            { del: { $eq: false } }
+        );
+
+        if (result && result.length > 0) {
+
+            res.status(200).json(result);
+
+        }else{
+
+            res.status(200).json([]);
+        }
+
+        } catch (error) {
+
+            console.log(error)
+            res.status(500).json(
+                {message: error,
+                data: []
+                });
+        }
+} 
+
+
 module.exports= {
     minsertOne,
     mFindAll,
     mUpdateOne,
     mDeleteOne,
-    mRestoreOne
+    mRestoreOne,
+    mPapelera
 }

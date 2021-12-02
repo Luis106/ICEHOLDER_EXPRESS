@@ -6,7 +6,8 @@ const {
     mFindAll,
     mUpdateOne,
     mDeleteOne,
-    mRestoreOne
+    mRestoreOne,
+    mPapelera
 } = require("../controllers/Producto.controller")
 
 
@@ -17,5 +18,6 @@ router.post('/create', minsertOne);
 router.post('/update', mUpdateOne);
 router.post('/delete', mDeleteOne);
 router.post('/restore', mRestoreOne);
+router.post('/Papelera', mPapelera);
 
 module.exports = router;

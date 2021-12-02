@@ -29,7 +29,7 @@ async function minsertOne(req,res){
 
        } catch (error) {
 
-           console.log(error)
+           console.log("Error en servidor", error)
            res.status(500).send("No se pudo guardar el Venta");
        }
 
