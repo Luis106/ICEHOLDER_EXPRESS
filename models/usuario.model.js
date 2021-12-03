@@ -18,6 +18,10 @@ const todoShema = new mongoose.Schema(
             type: Boolean,
             default: true
 
+        },
+        Admin: {
+            type: Boolean,
+            default: true
         }
     }
 )

@@ -30,7 +30,6 @@ async function minsertOne(req,res){
         res.status(400).send("Falta de parametros");
     }
 }
-
 ///http://localhost:3000/Producto/listall?status=NEW
 async function mFindAll(req,res){
     try {
@@ -174,7 +173,6 @@ async function mPapelera(req,res){
                 });
         }
 } 
-
 
 module.exports= {
     minsertOne,
