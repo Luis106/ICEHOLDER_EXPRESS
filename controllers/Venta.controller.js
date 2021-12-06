@@ -8,7 +8,7 @@ async function minsertOne(req,res){
     const Personal = req.body.Personal;
     const Montos = req.body.Montos;
     
-    const Fecha = (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear() )
+    const Fecha = (date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear() )
     const Hora = (date.getHours()+":"+date.getMinutes()+":"+date.getSeconds() )
     if (Productos && Cantidades && Personal && Montos){
        try {
@@ -37,7 +37,6 @@ async function minsertOne(req,res){
         res.status(400).send("Falta de parametros");
     }
 }
-
 ///http://localhost:3000/Venta/listall?status=NEW
 async function mFindAll(req,res){
 
@@ -58,7 +57,6 @@ async function mFindAll(req,res){
                 });
         }
 }   
-
 async function mDeleteOne(req,res){
 
     const taskId = req.body._id;
@@ -83,7 +81,6 @@ async function mDeleteOne(req,res){
         }
     }
 }
-
 async function mRestore(req,res){
     const Id = req.body._id;
     if (Id){
@@ -111,7 +108,7 @@ async function mRestore(req,res){
     }
 }
 async function mMontoD(req,res){
-    const Fecha = (date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear())
+    const Fecha = (date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear())
     try {
         const result =  await Venta.find({
             del: { $eq: true }, Fecha: { $eq: Fecha }
@@ -124,8 +121,10 @@ async function mMontoD(req,res){
             result.forEach(element => {
                 n += element.Montos.reduce(reducer)
             });
+
             console.log(n)
 
+            
             const response = {
                 Dia: Fecha,
                 MontoTotal : n,
@@ -135,7 +134,15 @@ async function mMontoD(req,res){
             res.status(200).json(response);
 
         }else{
-            res.status(200).json([]);
+
+            const response = {
+                Dia: Fecha,
+                MontoTotal : 0,
+                Ventas: 0
+            } 
+
+
+            res.status(200).json(response);
         }
     } catch (error) {
         console.log(error)
@@ -145,7 +152,6 @@ async function mMontoD(req,res){
             });
     }
 }   
-
 async function mMontopDia(req,res){
     const Fecha = req.body.Fecha
     try {
@@ -183,6 +189,7 @@ async function mMontopDia(req,res){
 } 
 async function VentaspDia(req,res){
     const Fecha = req.body.Fecha
+    console.log(Fecha)
     try {
         const result =  await Venta.find({
             del: { $eq: true }, Fecha: { $eq: Fecha }
@@ -201,6 +208,35 @@ async function VentaspDia(req,res){
             });
     }
 } 
+async function mFindFor(req,res){
+    const param = req.body.Parametro;
+    const data = req.body.Datos;
+
+    try {
+
+        const result =  await Venta.find(
+            { del: { $eq: true }, [param]: {$eq: data}}
+
+        );
+        
+        if (result && result.length > 0) {
+
+            res.status(200).json(result);
+
+        }else{
+
+            res.status(200).json([]);
+        }
+
+        } catch (error) {
+
+            console.log(error)
+            res.status(500).json(
+                {message: error,
+                data: []
+                });
+        }
+}  
 
 
 
@@ -211,5 +247,6 @@ module.exports= {
     mDeleteOne,
     mMontoD,
     mMontopDia,
-    VentaspDia
+    VentaspDia,
+    mFindFor
 }

@@ -1,18 +1,20 @@
-const { Producto } = require("../models/Producto.model.js");
+const { Provedor } = require("../models/Provedores.model.js");
 
 async function minsertOne(req,res){
 
     const Nombre = req.body.Nombre;
-    const Precio = req.body.Precio;
-    const Cantidad = req.body.Cantidad;
+    const Direccion = req.body.Direccion;
+    const Correo = req.body.Correo;
+    const Telefono = req.body.Telefono;
     if (Nombre){
 
        try {
 
-            const newTask = await new Producto({
+            const newTask = await new Provedor({
                 Nombre: Nombre,
-                Precio: Precio,
-                Cantidad: Cantidad,
+                Direccion: Direccion,
+                Correo: Correo,
+                Telefono: Telefono
                
 
             }).save();
@@ -23,7 +25,7 @@ async function minsertOne(req,res){
        } catch (error) {
 
            console.log(error)
-           res.status(500).send("No se pudo guardar la Producto");
+           res.status(500).send("No se pudo guardar la Provedor");
        }
 
     }else{
@@ -33,7 +35,7 @@ async function minsertOne(req,res){
 async function mFindAll(req,res){
     try {
 
-        const result =  await Producto.find(
+        const result =  await Provedor.find(
             { del: { $eq: true } }
         );
 
@@ -64,7 +66,7 @@ async function mDeleteOne(req,res){
 
         try {
 
-            await Producto.updateOne({
+            await Provedor.updateOne({
                 _id: id.toString(),
             }, {
                 $set:{
@@ -78,7 +80,7 @@ async function mDeleteOne(req,res){
        } catch (error) {
 
            console.log(error)
-           res.status(500).send("No se pudo eliminar el producto");
+           res.status(500).send("No se pudo eliminar el Provedor");
        }
 
     }
@@ -92,7 +94,7 @@ async function mRestoreOne(req,res){
 
         try {
 
-            await Producto.updateOne({
+            await Provedor.updateOne({
                 _id: id.toString(),
             }, {
                 $set:{
@@ -106,7 +108,7 @@ async function mRestoreOne(req,res){
        } catch (error) {
 
            console.log(error)
-           res.status(500).send("No se pudo restaurar el producto");
+           res.status(500).send("No se pudo restaurar el Provedor");
        }
 
     }
@@ -114,23 +116,25 @@ async function mRestoreOne(req,res){
 async function mUpdateOne(req,res){
     const id = req.body._id;
     
-    const Nombre = req.body.Producto;
-    const Precio = req.body.Precio;
-    const Cantidad = req.body.Cantidad;
+    const Nombre = req.body.Nombre;
+    const Direccion = req.body.Direccion;
+    const Correo = req.body.Correo;
+    const Telefono = req.body.Telefono;
 
     if (id){
 
        try {
 
-            const response = await Producto.findOneAndUpdate(
+            const response = await Provedor.findOneAndUpdate(
             {
                 _id: id,
             }, 
             {
                 $set:{
-                    Producto: Nombre,
-                    Precio: Precio,
-                    Cantidad: Cantidad,
+                    Nombre: Nombre,
+                    Direccion: Direccion,
+                    Correo: Correo,
+                    Telefono: Telefono,
                 }
             },{new: true}); 
 
@@ -147,7 +151,7 @@ async function mUpdateOne(req,res){
 async function mPapelera(req,res){
     try {
 
-        const result =  await Producto.find(
+        const result =  await Provedor.find(
             { del: { $eq: false } }
         );
 
@@ -175,7 +179,7 @@ async function mFindFor(req,res){
 
     try {
 
-        const result =  await Producto.find(
+        const result =  await Provedor.find(
             { del: { $eq: true }, [param]: {$eq: data}}
 
         );

@@ -3,9 +3,6 @@ const crypto = require("crypto-js");
 
 const { Usuario } = require("../models/usuario.model.js");
 
-//431a9707c7825d610ac589f9fb102b13011bf0d1e26e5f910ccceec4aa2fc5325e4dd7309ec8a3d2640a8c17f6bcce2d8209c1c7ac1269287f08a7cdb177c1fa
-//431a9707c7825d610ac589f9fb102b13011bf0d1e26e5f910ccceec4aa2fc5325e4dd7309ec8a3d2640a8c17f6bcce2d8209c1c7ac1269287f08a7cdb177c1fa
-
 async function mFind(req,res){
 
     const Nombre = req.body.Nombre;
@@ -87,7 +84,9 @@ async function FindAll(req,res){
     try {
 
         const result =  await Usuario.find(
-            {del: { $eq: true } },
+            {
+                del: { $eq: true } 
+            },
             {Contraseña: 0}
             );
 
@@ -189,6 +188,7 @@ async function mUpdate(req,res){
     const _id = req.body._id;
     const Nombre = req.body.Nombre;
     const Admin = req.body.Admin;
+    
     if (_id){
 
        try {
@@ -213,6 +213,35 @@ async function mUpdate(req,res){
 
     }
 }
+async function mFindFor(req,res){
+    const param = req.body.Parametro;
+    const data = req.body.Datos;
+
+    try {
+
+        const result =  await Usuario.find(
+            { del: { $eq: true }, [param]: {$eq: data}},
+            { Contraseña: 0}
+        );
+        
+        if (result && result.length > 0) {
+
+            res.status(200).json(result);
+
+        }else{
+
+            res.status(200).json([]);
+        }
+
+        } catch (error) {
+
+            console.log(error)
+            res.status(500).json(
+                {message: error,
+                data: []
+                });
+        }
+}  
 
 
 
@@ -223,5 +252,6 @@ module.exports= {
     mDelete,
     mUpdate,
     FindAllP,
-    mRestore
+    mRestore,
+    mFindFor
 }

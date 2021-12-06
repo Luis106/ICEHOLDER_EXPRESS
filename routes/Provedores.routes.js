@@ -9,7 +9,7 @@ const {
     mRestoreOne,
     mPapelera,
     mFindFor
-} = require("../controllers/Producto.controller")
+} = require("../controllers/Provedores.controller")
 
 
 

@@ -8,7 +8,8 @@ const {
     mDelete,
     mUpdate,
     FindAllP,
-    mRestore
+    mRestore,
+    mFindFor
 } = require("../controllers/usuario.controller.js")
 
 
@@ -19,6 +20,8 @@ router.post('/borrar', mDelete);
 router.post('/cambiar', mUpdate);
 router.post('/papelera', FindAllP);
 router.post('/restaurar', mRestore);
+router.post('/buscar', mFindFor);
+
 
 
 module.exports = router;

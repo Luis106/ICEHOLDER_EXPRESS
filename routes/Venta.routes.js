@@ -8,7 +8,8 @@ const {
     mDeleteOne,
     mMontoD,
     mMontopDia,
-    VentaspDia
+    VentaspDia,
+    mFindFor
 } = require("../controllers/Venta.controller")
 
 //http://localhost:3000/Task
@@ -19,5 +20,6 @@ router.post('/delete', mDeleteOne);
 router.post('/corte', mMontoD);
 router.post('/cortepordia', mMontopDia);
 router.post('/ventaspordia', VentaspDia);
+router.post('/buscar', mFindFor);
 
 module.exports = router;
